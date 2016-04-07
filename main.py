@@ -22,22 +22,21 @@ import pandas
 from qwerty_distance import normalized_keyboard_word_distance
 
 
-# scores_dictionary format:
+# returns scores dictionary with format:
 # {
 #  "CompleteSquare": 10,
 #  "QuadraticFormula":  30,
 #  ...
 # }
-def phonetics_comparison(user_input, scores_dictionary, keywords_dictionary):
-	# iterate through solving methods
-	# for each one, iterate through scrubbed user input
-	# compare word w/ metaphone to list of keywords for solving method
-	# you get a list of distances from each keyword, reduce list by adding
-	# add this score to scores_dictionary for the method you're using (update, not set)
-
-	# Load phonetics packages
+def compare(user_input, keywords_dictionary):
+	# Load phonetics functions
 	dmeta = fuzzy.DMetaphone()
+	metaphone = lambda x: dmeta(x)[0]
 	soundex = fuzzy.Soundex(4)
+
+	# Load distance functions
+
+	compare_methods = [metaphone, soundex]
 
 	# Split user input into lists for iteration
 	input_list = user_input.split()
@@ -47,11 +46,13 @@ def phonetics_comparison(user_input, scores_dictionary, keywords_dictionary):
 	# and add score to the scores dictionary
 	for method, keywords in keywords_dictionary.iteritems():
 		for word in input_list:
-			metaphone_word = dmeta(word)[0]
-			metaphone_array = map(lambda x: dmeta(x)[0], keywords)
+			for comparison in compare_methods:
+				
+				metaphone_word = dmeta(word)[0]
+				metaphone_array = map(lambda x: dmeta(x)[0], keywords)
 
-			soundex_word = soundex(word)
-			soundex_array = map(soundex, keywords)
+				soundex_word = soundex(word)
+				soundex_array = map(soundex, keywords)
 
-			dist_array = damerau_levenshtein_distance_withNPArray(word, keywords)
-			dist = reduce(lambda x, y: x+y, dist_array)
+				dist_array = normalized_damerau_levenshtein_distance_withNPArray(metaphone_word, metaphone_array)
+				dist = reduce(lambda x, y: x+y, dist_array)

@@ -4,29 +4,22 @@ import fuzzy
 
 # Documentation here: https://github.com/gfairchild/pyxDamerauLevenshtein
 # pip install pyxDamerauLevenshtein
-import pyxdameraulevenshtein
+from pyxdameraulevenshtein import damerau_levenshtein_distance_withNPArray, normalized_damerau_levenshtein_distance_withNPArray
 
 
 # Documentation here: http://www.nltk.org/
 # pip install nltk
-import nltk
-nltk.download()  # Download text data sets, including stop words
+#nltk.download()  # Download text data sets, including stop words
 from nltk.corpus import stopwords
+
 # bag of stop words to exclude from input, convert to a set for search
-stop = set(stopwords.words('english'));
-
-# ML Package, Documentation:
-#  http://scikit-learn.org/stable/modules/svm.html#multi-class-classification
-#  http://scikit-learn.org/stable/modules/tree.html#classification
-#  http://scikit-learn.org/stable/supervised_learning.html#supervised-learning
-#pip install scikit-learn.org
-import scikit-learn.org
-
+stop = set(stopwords.words('english'))
 
 # Import pandas for reading data in/out for data structures from csv's.
 #pip install pandas
 import pandas
 
+from qwerty_distance import normalized_keyboard_word_distance
 
 
 # scores_dictionary format:
@@ -62,5 +55,3 @@ def phonetics_comparison(user_input, scores_dictionary, keywords_dictionary):
 
 			dist_array = damerau_levenshtein_distance_withNPArray(word, keywords)
 			dist = reduce(lambda x, y: x+y, dist_array)
-
-

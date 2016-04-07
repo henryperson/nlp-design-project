@@ -47,12 +47,8 @@ def compare(user_input, keywords_dictionary):
 	for method, keywords in keywords_dictionary.iteritems():
 		for word in input_list:
 			for comparison in compare_methods:
-				
-				metaphone_word = dmeta(word)[0]
-				metaphone_array = map(lambda x: dmeta(x)[0], keywords)
+				formatted_word = comparison(word)
+				formatted_array = map(comparison, keywords)
 
-				soundex_word = soundex(word)
-				soundex_array = map(soundex, keywords)
-
-				dist_array = normalized_damerau_levenshtein_distance_withNPArray(metaphone_word, metaphone_array)
+				dist_array = normalized_damerau_levenshtein_distance_withNPArray(formatted_word, formatted_array)
 				dist = reduce(lambda x, y: x+y, dist_array)

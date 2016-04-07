@@ -3,6 +3,7 @@
 #   http://stackoverflow.com/questions/29233888/edit-distance-such-as-
 #    levenshtein-taking-into-account-proximity-on-keyboard
 from math import sqrt
+import numpy as np
 
 # Distances on QWERTY keyboard for typo accuracy
 keyboard_cartesian = {
@@ -57,4 +58,13 @@ def normalized_keyboard_word_distance(a, b):
     return float(keyboard_word_distance(a,b))/max(len(a),
                                                   len(b))
 
+# Normalized QWERTY keyboard distance, for an array of inputs
+def normalized_keyboard_word_distance_withNPArray(string, array):
+    i = len(array)
+    res = np.empty(n, dtype=long)
+
+    for i in range(0, i):
+        res[i] = normalized_keyboard_word_distance(string, array[i])
+
+    return res
 ################################################################################

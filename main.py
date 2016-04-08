@@ -15,12 +15,21 @@ from nltk.corpus import stopwords
 # bag of stop words to exclude from input, convert to a set for search
 stop = set(stopwords.words('english'))
 
-# Import pandas for reading data in/out for data structures from csv's.
-#pip install pandas
-import pandas
+def readInput(keywords_dictionary, file_name):
+	# open file for reading
+	f = open(file_name, 'r')
+	# for each line, set the dictionary right for likelihoods
+	for line in f: 
+		# cut the newline crap
+		keywords_dictionary[line.rstrip()] = 0
+
+	return keywords_dictionary
+
+
+# me testing - works correct
+#readInput({}, "text.csv")
 
 from qwerty_distance import normalized_keyboard_word_distance_withNPArray
-
 
 # returns scores dictionary with format:
 # {
@@ -59,11 +68,11 @@ def compare(user_input, keywords_dictionary):
 				dist_array = normalized_damerau_levenshtein_distance_withNPArray(formatted_word, formatted_array)
 				dist = reduce(lambda x, y: x+y, dist_array)
 
-			# Do normal LD analysis
+			# Do QWERTY Keyboard analysis
 			dist_array = normalized_keyboard_word_distance_withNPArray(word, keywords)
 			dist = reduce(lambda x, y: x+y, dist_array)
 
-			# Do qwerty keyboard basic analysis 
+			# Do normal LD analysis
 			dist_array = normalized_damerau_levenshtein_distance_withNPArray(word, keywords)
 			dist = reduce(lambda x, y: x+y, dist_array)
 

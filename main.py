@@ -19,7 +19,7 @@ stop = set(stopwords.words('english'))
 #pip install pandas
 import pandas
 
-from qwerty_distance import normalized_keyboard_word_distance
+from qwerty_distance import normalized_keyboard_word_distance_withNPArray
 
 
 # returns scores dictionary with format:
@@ -58,3 +58,12 @@ def compare(user_input, keywords_dictionary):
 
 				dist_array = normalized_damerau_levenshtein_distance_withNPArray(formatted_word, formatted_array)
 				dist = reduce(lambda x, y: x+y, dist_array)
+
+			# Do normal LD analysis
+			dist_array = normalized_keyboard_word_distance_withNPArray(word, keywords)
+			dist = reduce(lambda x, y: x+y, dist_array)
+
+			# Do qwerty keyboard basic analysis 
+			dist_array = normalized_damerau_levenshtein_distance_withNPArray(word, keywords)
+			dist = reduce(lambda x, y: x+y, dist_array)
+

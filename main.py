@@ -44,6 +44,12 @@ def compare(user_input, keywords_dictionary):
 	# Iterate through methods for solving, then iterate through words in
 	# scrubbed user input. For each word, compare phonetics to all keywords
 	# and add score to the scores dictionary
+
+	# TODO (here):
+	# Rework for loop to iterate through comparisons first (dynamic programming)
+	# Separate for loop so we can actually use qwerty distance
+	# Add in logical support (not complete square)
+
 	for method, keywords in keywords_dictionary.iteritems():
 		for word in input_list:
 			for comparison in compare_methods:

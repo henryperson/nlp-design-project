@@ -6,7 +6,6 @@ import fuzzy
 # pip install pyxDamerauLevenshtein
 from pyxdameraulevenshtein import damerau_levenshtein_distance_withNPArray, normalized_damerau_levenshtein_distance_withNPArray
 
-
 # Documentation here: http://www.nltk.org/
 # pip install nltk
 #nltk.download()  # Download text data sets, including stop words
@@ -14,17 +13,6 @@ from nltk.corpus import stopwords
 
 # bag of stop words to exclude from input, convert to a set for search
 stop = set(stopwords.words('english'))
-
-def readInput(keywords_dictionary, file_name):
-	# open file for reading
-	f = open(file_name, 'r')
-	# for each line, set the dictionary right for likelihoods
-	for line in f: 
-		# cut the newline crap
-		keywords_dictionary[line.rstrip()] = 0
-
-	return keywords_dictionary
-
 
 # me testing - works correct
 #readInput({}, "text.csv")

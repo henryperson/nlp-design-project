@@ -6,7 +6,6 @@ import fuzzy
 # pip install pyxDamerauLevenshtein
 from pyxdameraulevenshtein import damerau_levenshtein_distance_withNPArray, normalized_damerau_levenshtein_distance_withNPArray
 
-
 # Documentation here: http://www.nltk.org/
 # pip install nltk
 #nltk.download()  # Download text data sets, including stop words
@@ -23,7 +22,6 @@ def readInput(keywords_dictionary, file_name):
 		# cut the newline crap
 		keywords_dictionary[line.rstrip()] = 0
 	return keywords_dictionary
-
 
 # me testing - works correct
 #readInput({}, "text.csv")

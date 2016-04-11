@@ -49,10 +49,6 @@ def compare(user_input, keywords_dictionary):
 
 	phonetics_methods = [metaphone, soundex]
 
-	# Split user input into lists for iteration
-	raw_input_list = user_input.split()
-	input_list = map(lambda x: x.lower(), raw_input_list)
-
 	scores = {}
 
 	# Iterate through methods for solving, then iterate through words in
@@ -61,16 +57,17 @@ def compare(user_input, keywords_dictionary):
 	# analyses
 	for method, keywords in keywords_dictionary.iteritems():
 		scores[method] = 0
-		for word in input_list:
-			for phonetic in phonetics_methods:
-				# Get phonetics of user input and keywords, analyze distance with DL
-				formatted_word = phonetic(word)
-				formatted_array = map(phonetic, keywords)
 
+		for phonetic in phonetics_methods:
+			formatted_array = map(phonetic, keywords)
+
+			for word in input_list:
+				formatted_word = phonetic(word)
 				dist_array = normalized_damerau_levenshtein_distance_withNPArray(formatted_word, formatted_array)
 				dist = reduce(lambda x, y: x if x < y else y, dist_array, float("inf"))
 				scores[method] += dist
 
+		for word in input_list:
 			# Do QWERTY Keyboard analysis
 			dist_array = normalized_keyboard_word_distance_withNPArray(word, keywords)
 			dist = reduce(lambda x, y: x if x < y else y, dist_array, float("inf"))
@@ -80,6 +77,7 @@ def compare(user_input, keywords_dictionary):
 			dist_array = normalized_damerau_levenshtein_distance_withNPArray(word, keywords)
 			dist = reduce(lambda x, y: x if x < y else y, dist_array, float("inf"))
 			scores[method] += dist
+			
 
 	return scores
 

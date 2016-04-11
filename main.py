@@ -15,12 +15,20 @@ from nltk.corpus import stopwords
 # bag of stop words to exclude from input, convert to a set for search
 stop = set(stopwords.words('english'))
 
-# Import pandas for reading data in/out for data structures from csv's.
-#pip install pandas
-import pandas
+def readInput(keywords_dictionary, file_name):
+	# open file for reading
+	f = open(file_name, 'r')
+	# for each line, set the dictionary right for likelihoods
+	for line in f: 
+		# cut the newline crap
+		keywords_dictionary[line.rstrip()] = 0
+	return keywords_dictionary
 
-from qwerty_distance import normalized_keyboard_word_distance
 
+# me testing - works correct
+#readInput({}, "text.csv")
+
+from qwerty_distance import normalized_keyboard_word_distance_withNPArray
 
 # Takes keywords dictionary with format:
 # {
@@ -41,27 +49,39 @@ def compare(user_input, keywords_dictionary):
 	metaphone = lambda x: dmeta(x)[0]
 	soundex = fuzzy.Soundex(4)
 
-	# Load distance functions
-
-	compare_methods = [metaphone, soundex]
+	phonetics_methods = [metaphone, soundex]
 
 	# Split user input into lists for iteration
-	input_list = user_input.split()
+	raw_input_list = user_input.split()
+	input_list = map(lambda x: x.lower(), raw_input_list)
+
+	scores = {}
 
 	# Iterate through methods for solving, then iterate through words in
 	# scrubbed user input. For each word, compare phonetics to all keywords
-	# and add score to the scores dictionary
-
-	# TODO (here):
-	# Rework for loop to iterate through comparisons first (dynamic programming)
-	# Separate for loop so we can actually use qwerty distance
-	# Add in logical support (not complete square)
-
+	# and add score to the scores dictionary. After, do normal QWERTY and LD
+	# analyses
 	for method, keywords in keywords_dictionary.iteritems():
+		scores[method] = 0
 		for word in input_list:
-			for comparison in compare_methods:
-				formatted_word = comparison(word)
-				formatted_array = map(comparison, keywords)
+			for phonetic in phonetics_methods:
+				# Get phonetics of user input and keywords, analyze distance with DL
+				formatted_word = phonetic(word)
+				formatted_array = map(phonetic, keywords)
 
 				dist_array = normalized_damerau_levenshtein_distance_withNPArray(formatted_word, formatted_array)
-				dist = reduce(lambda x, y: x+y, dist_array)
+				dist = reduce(lambda x, y: x if x < y else y, dist_array, float("inf"))
+				scores[method] += dist
+
+			# Do QWERTY Keyboard analysis
+			dist_array = normalized_keyboard_word_distance_withNPArray(word, keywords)
+			dist = reduce(lambda x, y: x if x < y else y, dist_array, float("inf"))
+			scores[method] += dist
+
+			# Do normal LD analysis
+			dist_array = normalized_damerau_levenshtein_distance_withNPArray(word, keywords)
+			dist = reduce(lambda x, y: x if x < y else y, dist_array, float("inf"))
+			scores[method] += dist
+
+	return scores
+

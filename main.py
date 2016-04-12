@@ -63,12 +63,12 @@ def compare(input_list, keywords_dictionary):
 			# Do QWERTY Keyboard analysis
 			dist_array = normalized_keyboard_word_distance_withNPArray(word, keywords)
 			dist = reduce(lambda x, y: x if x < y else y, dist_array, float("inf"))
-			scores[method] += dist
+			scores[method] += dist**2
 
 			# Do normal LD analysis
 			dist_array = normalized_damerau_levenshtein_distance_withNPArray(word, np.asarray(keywords))
 			dist = reduce(lambda x, y: x if x < y else y, dist_array, float("inf"))
-			scores[method] += dist
+			scores[method] += dist**2
 			
 
 	return scores

@@ -14,19 +14,11 @@ from nltk.corpus import stopwords
 # bag of stop words to exclude from input, convert to a set for search
 stop = set(stopwords.words('english'))
 
-def readInput(keywords_dictionary, file_name):
-	# open file for reading
-	f = open(file_name, 'r')
-	# for each line, set the dictionary right for likelihoods
-	for line in f: 
-		# cut the newline crap
-		keywords_dictionary[line.rstrip()] = 0
-	return keywords_dictionary
-
-# me testing - works correct
-#readInput({}, "text.csv")
+from readInput import takeUserInput, readInput
 
 from qwerty_distance import normalized_keyboard_word_distance_withNPArray
+
+import numpy as np
 
 # Takes keywords dictionary with format:
 # {
@@ -41,7 +33,7 @@ from qwerty_distance import normalized_keyboard_word_distance_withNPArray
 #  "QuadraticFormula":  30,
 #  ...
 # }
-def compare(user_input, keywords_dictionary):
+def compare(input_list, keywords_dictionary):
 	# Load phonetics functions
 	dmeta = fuzzy.DMetaphone()
 	metaphone = lambda x: dmeta(x)[0]
@@ -59,7 +51,7 @@ def compare(user_input, keywords_dictionary):
 		scores[method] = 0
 
 		for phonetic in phonetics_methods:
-			formatted_array = map(phonetic, keywords)
+			formatted_array = np.asarray(map(phonetic, keywords));
 
 			for word in input_list:
 				formatted_word = phonetic(word)
@@ -74,10 +66,20 @@ def compare(user_input, keywords_dictionary):
 			scores[method] += dist
 
 			# Do normal LD analysis
-			dist_array = normalized_damerau_levenshtein_distance_withNPArray(word, keywords)
+			dist_array = normalized_damerau_levenshtein_distance_withNPArray(word, np.asarray(keywords))
 			dist = reduce(lambda x, y: x if x < y else y, dist_array, float("inf"))
 			scores[method] += dist
 			
 
 	return scores
 
+# Adding a "live demo" to play with.
+def testing():
+	user_input = takeUserInput();
+	keywords_dictionary = readInput("text.csv");
+	scores = compare(user_input, keywords_dictionary);
+	print(scores);
+	print(min(scores, key=scores.get));
+
+# run the live demo
+testing();

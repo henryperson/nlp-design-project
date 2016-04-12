@@ -10,13 +10,23 @@ from nltk.corpus import stopwords
 
 from profanity import bad_words
 
+import string
+
+def depunctuation(s):
+	out = s.translate(string.maketrans("",""), string.punctuation)
+	return out
+
+
 def split_upper(s):
     return filter(None, re.split("([A-Z][^A-Z]*)", s))
 
-def readInput(keywords_dictionary, file_name):
+def readInput(file_name):
 	# open file for reading
 	f = open(file_name, 'r')
 	# for each line, set the dictionary right for likelihoods
+
+	keywords_dictionary = {}
+
 	for line in f: 
 		current = line.rstrip()
 		split_words = map(lambda x:x.lower(), split_upper(current));
@@ -26,9 +36,15 @@ def readInput(keywords_dictionary, file_name):
 	return keywords_dictionary
 
 def takeUserInput():
+	# take input from stdin
 	solve_method = raw_input("How will you solve this problem? ");
+
+	# remove punctuation from string
+	solve_method = depunctuation(solve_method);
+	# split string by spaces, make lower case
 	split_words = map(lambda x:x.lower(), solve_method.split());
 
+	# test for profanity
 	test = [1 for word in split_words if word in bad_words]
 	if (test):
 		print("Please don't say inappropriate things to me.");

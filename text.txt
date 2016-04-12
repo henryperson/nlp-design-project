@@ -1,0 +1,6 @@
+QuadraticFormula
+CompleteTheSquare
+TakeSquareRoots
+FactorQuadratic
+EliminationMethod
+SubstitutionMethod

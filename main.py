@@ -76,7 +76,7 @@ def compare(input_list, keywords_dictionary):
 # Adding a "live demo" to play with.
 def testing():
 	user_input = takeUserInput();
-	keywords_dictionary = readInput("text.csv");
+	keywords_dictionary = readInput("text.txt");
 	scores = compare(user_input, keywords_dictionary);
 	print(scores);
 	print(min(scores, key=scores.get));

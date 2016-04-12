@@ -14,11 +14,13 @@ from nltk.corpus import stopwords
 # bag of stop words to exclude from input, convert to a set for search
 stop = set(stopwords.words('english'))
 
-from readInput import takeUserInput, readInput
+from read_input import take_user_input, read_input
 
 from qwerty_distance import normalized_keyboard_word_distance_withNPArray
 
 import numpy as np
+
+import sys
 
 # Takes keywords dictionary with format:
 # {
@@ -73,13 +75,32 @@ def compare(input_list, keywords_dictionary):
 
 	return scores
 
-# Adding a "live demo" to play with.
-def testing():
-	user_input = takeUserInput();
-	keywords_dictionary = readInput("text.txt");
-	scores = compare(user_input, keywords_dictionary);
-	print(scores);
-	print(min(scores, key=scores.get));
+def process_scores(scores):
+	similar_cases = 0;
+	values = scores.values()
+	min_score = min(values)
+	max_score = max(values)
+	min_score_keys = []
 
-# run the live demo
-testing();
+	for key, value in scores.iteritems():
+		if (abs(value - min_score) < 0.25):
+			min_score_keys.append(key)
+	
+	if ((max_score - min_score) < 1.5):
+		sys.exit("I am unsure what you meant. Please try again.")
+
+	#print(scores.keys()[scores.values().index(min_score)])
+	#print(scores)
+	#print(min_score)
+	#print(max_score)
+	print(min_score_keys)
+
+
+# Adding a "live demo" to play with.
+def live_demo():
+	user_input = take_user_input()
+	keywords_dictionary = read_input("text.txt")
+	scores = compare(user_input, keywords_dictionary)
+	process_scores(scores)
+
+live_demo()

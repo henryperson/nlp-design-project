@@ -38,6 +38,7 @@ import sys
 #  ...
 # }
 def compare(input_list, keywords_dictionary):
+	print(input_list)
 	# Load phonetics functions
 	dmeta = fuzzy.DMetaphone()
 	metaphone = lambda x: dmeta(x)[0]
@@ -59,53 +60,45 @@ def compare(input_list, keywords_dictionary):
 
 			for word in input_list:
 				formatted_word = phonetic(word)
-				# dist_array = normalized_damerau_levenshtein_distance_withNPArray(formatted_word, formatted_array)
-				dist_array = damerau_levenshtein_distance_withNPArray(formatted_word, formatted_array)
-				print("Word '{}' being compared to keywords {}. Scores:".format(word, keywords))
-				print(dist_array)
+				dist_array = normalized_damerau_levenshtein_distance_withNPArray(formatted_word, formatted_array)
+				# dist_array = damerau_levenshtein_distance_withNPArray(formatted_word, formatted_array)
 				dist = reduce(lambda x, y: x if x < y else y, dist_array, float("inf"))
-				scores[method] += dist**2
+				scores[method] += 10*dist
 
 		for word in input_list:
-			# # Do QWERTY Keyboard analysis
-			# # dist_array = normalized_keyboard_word_distance_withNPArray(word, keywords)
-			# dist_array = keyboard_word_distance_withNPArray(formatted_word, keywords)
-			# dist = reduce(lambda x, y: x if x < y else y, dist_array, float("inf"))
-			# scores[method] += dist
-			# print("Word '{}' being compared to keywords {}. QWERTY Scores:".format(word, keywords))
-			# print(dist_array)
-
-			# Do normal LD analysis
-			# dist_array = normalized_damerau_levenshtein_distance_withNPArray(word, np.asarray(keywords))
-			dist_array = damerau_levenshtein_distance_withNPArray(formatted_word, np.asarray(keywords))
+			# Do QWERTY Keyboard analysis
+			dist_array = normalized_keyboard_word_distance_withNPArray(word, keywords)
+			# dist_array = keyboard_word_distance_withNPArray(word, keywords)
 			dist = reduce(lambda x, y: x if x < y else y, dist_array, float("inf"))
 			scores[method] += dist
-			print("Word '{}' being compared to keywords {}. LD Scores:".format(word, keywords))
-			print(dist_array)
+
+			# Do normal LD analysis
+			dist_array = normalized_damerau_levenshtein_distance_withNPArray(word, np.asarray(keywords))
+			# dist_array = damerau_levenshtein_distance_withNPArray(word, np.asarray(keywords))
+			dist = reduce(lambda x, y: x if x < y else y, dist_array, float("inf"))
+			scores[method] += dist
 			
 	# import pdb; pdb.set_trace()
 	return scores
 
 def find_probabilities(scores):
+	for method in sorted(scores, key=scores.get, reverse=True):
+		del scores[method]
+		remaining = len(scores)
+		if (remaining == 3):
+			break
+
+	min_score = scores[min(scores, key=scores.get)]
+
 	probabilities = {}
-	total_score = sum(scores.values())
-	print(total_score)
 	for method, score in scores.iteritems():
-		probabilities[method] = 1 - float(score) / total_score
+		probabilities[method] = float(min_score+1)/(score+1)
 
-	# for i in range(3):
-	# 	min_p = min(probabilities.values())
-	# 	probabilities.remove()
-
-	# for method, p in p.iteritems():
-
-
+	print(probabilities)
 	total_probs = sum(probabilities.values())
 	prob_factor = 1/total_probs
 	for method, p in probabilities.iteritems():
 		probabilities[method] = prob_factor * p
-
-	print(sum(probabilities.values()))
 
 	return probabilities
 
@@ -136,7 +129,8 @@ def live_demo():
 	user_input = take_user_input()
 	keywords_dictionary = read_input("text.txt")
 	scores = compare(user_input, keywords_dictionary)
+	print(scores)
 	process_scores(scores)
-	# print(find_probabilities(scores))
+	print(find_probabilities(scores))
 
 live_demo()

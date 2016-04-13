@@ -32,7 +32,7 @@ def live_demo():
 	probabilities = find_probabilities(scores);
 
 	# Print the probabilities, if you want to know more details
-	# print(probabilities)
+	print(probabilities)
 
 	# Process scores based on probabilities
 	process_scores(probabilities);

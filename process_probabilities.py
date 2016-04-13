@@ -45,9 +45,9 @@ def find_probabilities(scores):
 #  "QuadraticFormula":  .395,
 #  ...
 # }
-def process_scores(scores):
+def process_scores(probabilities):
 	# values from the dictionary
-	values = scores.values()
+	values = probabilities.values()
 
 	# max score value
 	max_score = max(values)
@@ -56,7 +56,7 @@ def process_scores(scores):
 	max_score_keys = []
 
 	# for each score, add in those with the lowest or close values
-	for key, value in scores.iteritems():
+	for key, value in probabilities.iteritems():
 		if (abs(value - max_score) < .05):
 			max_score_keys.append(key)
 	

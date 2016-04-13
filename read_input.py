@@ -65,7 +65,6 @@ def take_user_input():
 	# remove stopwords 
 	stop = stopwords.words('english')
 	stop.remove("not") #take "not" out of stop words
-	stop.append("use") #add "use" to stop words 
 	filtered_words = [word for word in split_words if word not in stop]
 	
 	# add a new dictionary of indices of key words from the nots
@@ -76,9 +75,12 @@ def take_user_input():
 	try: 
 		target_index = filtered_words.index("not") # find the not
 		target_index_original_string = split_words.index("not") # original not
+		words_after_not = len(filtered_words[target_index+1:])
+		tot_normalize = (words_after_not*(words_after_not+1))/2
+
 		for word in filtered_words[target_index+1:]: # put how far away word is
-			word_weights[word] = split_words.index(word) - \
-				target_index_original_string
+			word_weights[word] = ((split_words.index(word) - \
+				target_index_original_string)/float(tot_normalize))*10
 
 		return [filtered_words, word_weights]
 

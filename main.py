@@ -37,8 +37,8 @@ import sys
 #  "QuadraticFormula":  30,
 #  ...
 # }
-def compare(input_list, keywords_dictionary):
-	print(input_list)
+
+def compare(input_list, keywords_dictionary, word_weights):
 	# Load phonetics functions
 	dmeta = fuzzy.DMetaphone()
 	metaphone = lambda x: dmeta(x)[0]
@@ -63,7 +63,8 @@ def compare(input_list, keywords_dictionary):
 				dist_array = normalized_damerau_levenshtein_distance_withNPArray(formatted_word, formatted_array)
 				# dist_array = damerau_levenshtein_distance_withNPArray(formatted_word, formatted_array)
 				dist = reduce(lambda x, y: x if x < y else y, dist_array, float("inf"))
-				scores[method] += 10*dist
+				n = word_weights.get(word) if word_weights.get(word) else 1
+				scores[method] += n*10*dist
 
 		for word in input_list:
 			# Do QWERTY Keyboard analysis
@@ -94,7 +95,6 @@ def find_probabilities(scores):
 	for method, score in scores.iteritems():
 		probabilities[method] = float(min_score+1)/(score+1)
 
-	print(probabilities)
 	total_probs = sum(probabilities.values())
 	prob_factor = 1/total_probs
 	for method, p in probabilities.iteritems():
@@ -111,10 +111,10 @@ def process_scores(scores):
 	min_score_keys = []
 
 	for key, value in scores.iteritems():
-		if (abs(value - min_score) < 0.25):
+		if (abs(value - min_score) < 2.25):
 			min_score_keys.append(key)
 	
-	if ((max_score - min_score) < 1.5):
+	if ((max_score - min_score) < 15):
 		sys.exit("I am unsure what you meant. Please try again.")
 
 	#print(scores.keys()[scores.values().index(min_score)])
@@ -126,10 +126,14 @@ def process_scores(scores):
 
 # Adding a "live demo" to play with.
 def live_demo():
-	user_input = take_user_input()
+	[user_input, word_weights] = take_user_input()
+
+	# if none of the input is significant
+	if user_input is None:
+		sys.exit("I am unsure what you meant. Please try again.")
+
 	keywords_dictionary = read_input("text.txt")
-	scores = compare(user_input, keywords_dictionary)
-	print(scores)
+	scores = compare(user_input, keywords_dictionary, word_weights)
 	process_scores(scores)
 	print(find_probabilities(scores))
 

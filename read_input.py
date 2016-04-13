@@ -35,6 +35,7 @@ def read_input(file_name):
 		filtered_words = [word for word in split_words if word not in stopwords.words('english')]
 		keywords_dictionary[current] = filtered_words
 
+	keywords_dictionary["UnknownMethod"] = ["do", "not", "know", "unknown", "help", "helping"]
 	return keywords_dictionary
 
 def take_user_input():
@@ -53,16 +54,25 @@ def take_user_input():
 
 	# remove stopwords 
 	stop = stopwords.words('english')
-	stop.remove("not"); #take "not" out of stop words
+	stop.remove("not") #take "not" out of stop words
+	stop.append("use") #add "use" to stop words 
 	filtered_words = [word for word in split_words if word not in stop]
 	
-	# remove everything after a "not", including the not
+	# add a new dictionary of indices of key words from the nots
+	word_weights = {}
+	# weight all things after a "not" by how far away things are from the "not"
+	# in the input. We keep the "not" so that "i do not know" keeps.
 	try: 
 		target_index = filtered_words.index("not")
-	except ValueError, e:
-		target_index = None
+		target_index_original_string = split_words.index("not")
+		for word in filtered_words[target_index:]:
+			word_weights[word] = split_words.index(word) - target_index_original_string;
 
-	return filtered_words[:target_index]
+		return [filtered_words, word_weights];
+	except ValueError, e:
+		# return an empty word_weight
+		target_index = None
+		return [filtered_words[:target_index], {}]
 
 # TESTING: 
 # print(readInput({}, "text.csv"))

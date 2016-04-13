@@ -3,6 +3,8 @@
 #    -capital-letters
 import re
 
+import sys
+
 # Documentation here: http://www.nltk.org/
 # pip install nltk
 #nltk.download()  # Download text data sets, including stop words
@@ -20,7 +22,7 @@ def depunctuation(s):
 def split_upper(s):
     return filter(None, re.split("([A-Z][^A-Z]*)", s))
 
-def readInput(file_name):
+def read_input(file_name):
 	# open file for reading
 	f = open(file_name, 'r')
 	# for each line, set the dictionary right for likelihoods
@@ -35,7 +37,7 @@ def readInput(file_name):
 
 	return keywords_dictionary
 
-def takeUserInput():
+def take_user_input():
 	# take input from stdin
 	solve_method = raw_input("How will you solve this problem? ");
 
@@ -47,8 +49,7 @@ def takeUserInput():
 	# test for profanity
 	test = [1 for word in split_words if word in bad_words]
 	if (test):
-		print("Please don't say inappropriate things to me.");
-		return 0;
+		sys.exit("Please don't say inappropriate things to me.")
 
 	# remove stopwords 
 	stop = stopwords.words('english')

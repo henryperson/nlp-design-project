@@ -58,6 +58,15 @@ def normalized_keyboard_word_distance(a, b):
     return float(keyboard_word_distance(a,b))/max(len(a),
                                                   len(b))
 
+def keyboard_word_distance_withNPArray(string, array):
+    n = len(array)
+    res = np.empty(n, dtype=long)
+
+    for i in range(0, n):
+        res[i] = keyboard_word_distance(string, array[i])
+
+    return res
+
 # Normalized QWERTY keyboard distance, for an array of inputs
 def normalized_keyboard_word_distance_withNPArray(string, array):
     n = len(array)

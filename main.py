@@ -37,7 +37,7 @@ import sys
 #  "QuadraticFormula":  30,
 #  ...
 # }
-def compare(input_list, keywords_dictionary):
+def compare(input_list, keywords_dictionary, word_weights):
 	# Load phonetics functions
 	dmeta = fuzzy.DMetaphone()
 	metaphone = lambda x: dmeta(x)[0]
@@ -61,8 +61,8 @@ def compare(input_list, keywords_dictionary):
 				formatted_word = phonetic(word)
 				# dist_array = normalized_damerau_levenshtein_distance_withNPArray(formatted_word, formatted_array)
 				dist_array = damerau_levenshtein_distance_withNPArray(formatted_word, formatted_array)
-				print("Word '{}' being compared to keywords {}. Scores:".format(word, keywords))
-				print(dist_array)
+				#print("Word '{}' being compared to keywords {}. Scores:".format(word, keywords))
+				#print(dist_array)
 				dist = reduce(lambda x, y: x if x < y else y, dist_array, float("inf"))
 				scores[method] += dist**2
 
@@ -80,8 +80,8 @@ def compare(input_list, keywords_dictionary):
 			dist_array = damerau_levenshtein_distance_withNPArray(formatted_word, np.asarray(keywords))
 			dist = reduce(lambda x, y: x if x < y else y, dist_array, float("inf"))
 			scores[method] += dist
-			print("Word '{}' being compared to keywords {}. LD Scores:".format(word, keywords))
-			print(dist_array)
+			#print("Word '{}' being compared to keywords {}. LD Scores:".format(word, keywords))
+			#print(dist_array)
 			
 	# import pdb; pdb.set_trace()
 	return scores
@@ -111,6 +111,7 @@ def find_probabilities(scores):
 
 
 def process_scores(scores):
+	print(scores)
 	similar_cases = 0;
 	values = scores.values()
 	min_score = min(values)
@@ -118,10 +119,10 @@ def process_scores(scores):
 	min_score_keys = []
 
 	for key, value in scores.iteritems():
-		if (abs(value - min_score) < 0.25):
+		if (abs(value - min_score) < 2.25):
 			min_score_keys.append(key)
 	
-	if ((max_score - min_score) < 1.5):
+	if ((max_score - min_score) < 15):
 		sys.exit("I am unsure what you meant. Please try again.")
 
 	#print(scores.keys()[scores.values().index(min_score)])
@@ -133,9 +134,14 @@ def process_scores(scores):
 
 # Adding a "live demo" to play with.
 def live_demo():
-	user_input = take_user_input()
+	[user_input, word_weights] = take_user_input()
+
+	# if none of the input is significant
+	if user_input is None:
+		sys.exit("I am unsure what you meant. Please try again.")
+
 	keywords_dictionary = read_input("text.txt")
-	scores = compare(user_input, keywords_dictionary)
+	scores = compare(user_input, keywords_dictionary, word_weights)
 	process_scores(scores)
 	# print(find_probabilities(scores))
 

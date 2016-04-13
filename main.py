@@ -1,140 +1,41 @@
 #!/usr/bin/python
 
-# Documentation here: https://pypi.python.org/pypi/Fuzzy
-# pip install fuzzy
-import fuzzy
+# Import separate written functions for code written
+from read_input import take_user_input, read_possible_classifications
+from compare import compare
+from process_probabilities import find_probabilities, process_scores
 
-# Documentation here: https://github.com/gfairchild/pyxDamerauLevenshtein
-# pip install pyxDamerauLevenshtein
-from pyxdameraulevenshtein import damerau_levenshtein_distance_withNPArray, normalized_damerau_levenshtein_distance_withNPArray
-
-# Documentation here: http://www.nltk.org/
-# pip install nltk
-#nltk.download()  # Download text data sets, including stop words
-from nltk.corpus import stopwords
-
-# bag of stop words to exclude from input, convert to a set for search
-stop = set(stopwords.words('english'))
-
-from read_input import take_user_input, read_input
-
-from qwerty_distance import normalized_keyboard_word_distance_withNPArray, keyboard_word_distance_withNPArray
-
-import numpy as np
-
+# Import sys to exit with messages
 import sys
-
-# Takes keywords dictionary with format:
-# {
-#  "CompleteSquare": ["Complete", "Square"],
-#  "QuadraticFormula":  ["Quadratic", "Formula"],
-#  ...
-# }
-
-# returns scores dictionary with format:
-# {
-#  "CompleteSquare": 10,
-#  "QuadraticFormula":  30,
-#  ...
-# }
-
-def compare(input_list, keywords_dictionary, word_weights):
-	# Load phonetics functions
-	dmeta = fuzzy.DMetaphone()
-	metaphone = lambda x: dmeta(x)[0]
-	soundex = fuzzy.Soundex(4)
-
-	phonetics_methods = [metaphone, soundex]
-
-	scores = {}
-
-	# Iterate through methods for solving, then iterate through words in
-	# scrubbed user input. For each word, compare phonetics to all keywords
-	# and add score to the scores dictionary. After, do normal QWERTY and LD
-	# analyses
-	for method, keywords in keywords_dictionary.iteritems():
-		scores[method] = 0
-
-		for phonetic in phonetics_methods:
-			formatted_array = np.asarray(map(phonetic, keywords))
-
-			for word in input_list:
-				formatted_word = phonetic(word)
-				dist_array = normalized_damerau_levenshtein_distance_withNPArray(formatted_word, formatted_array)
-				# dist_array = damerau_levenshtein_distance_withNPArray(formatted_word, formatted_array)
-				dist = reduce(lambda x, y: x if x < y else y, dist_array, float("inf"))
-				n = word_weights.get(word) if word_weights.get(word) else 1
-				scores[method] += n*10*dist
-
-		for word in input_list:
-			# Do QWERTY Keyboard analysis
-			dist_array = normalized_keyboard_word_distance_withNPArray(word, keywords)
-			# dist_array = keyboard_word_distance_withNPArray(word, keywords)
-			dist = reduce(lambda x, y: x if x < y else y, dist_array, float("inf"))
-			scores[method] += dist
-
-			# Do normal LD analysis
-			dist_array = normalized_damerau_levenshtein_distance_withNPArray(word, np.asarray(keywords))
-			# dist_array = damerau_levenshtein_distance_withNPArray(word, np.asarray(keywords))
-			dist = reduce(lambda x, y: x if x < y else y, dist_array, float("inf"))
-			scores[method] += dist
-			
-	# import pdb; pdb.set_trace()
-	return scores
-
-def find_probabilities(scores):
-	for method in sorted(scores, key=scores.get, reverse=True):
-		del scores[method]
-		remaining = len(scores)
-		if (remaining == 3):
-			break
-
-	min_score = scores[min(scores, key=scores.get)]
-
-	probabilities = {}
-	for method, score in scores.iteritems():
-		probabilities[method] = float(min_score+1)/(score+1)
-
-	total_probs = sum(probabilities.values())
-	prob_factor = 1/total_probs
-	for method, p in probabilities.iteritems():
-		probabilities[method] = prob_factor * p
-
-	return probabilities
-
-
-def process_scores(scores):
-	similar_cases = 0;
-	values = scores.values()
-	min_score = min(values)
-	max_score = max(values)
-	min_score_keys = []
-
-	for key, value in scores.iteritems():
-		if (abs(value - min_score) < 2.25):
-			min_score_keys.append(key)
-	
-	if ((max_score - min_score) < 15):
-		sys.exit("I am unsure what you meant. Please try again.")
-
-	#print(scores.keys()[scores.values().index(min_score)])
-	#print(scores)
-	#print(min_score)
-	#print(max_score)
-	print(min_score_keys)
-
 
 # Adding a "live demo" to play with.
 def live_demo():
+
+	# Question for the Demo
+	print("How would you solve this problem? x^2 + 16x = 96")
+
+	# Read in user input, clear out stop words, weight given the style of input
 	[user_input, word_weights] = take_user_input()
 
-	# if none of the input is significant
+	# if none of the input is significant at all
 	if user_input is None:
 		sys.exit("I am unsure what you meant. Please try again.")
 
-	keywords_dictionary = read_input("text.txt")
-	scores = compare(user_input, keywords_dictionary, word_weights)
-	process_scores(scores)
-	print(find_probabilities(scores))
+	# Read in the possible classifications to the dictionary
+	keywords_dictionary = read_possible_classifications("text.txt")
 
+	# Compare possibly classifications to significant user input, weighted
+	#   appropriately for "nots"
+	scores = compare(user_input, keywords_dictionary, word_weights)
+
+	# Calculate probabilities from the scores returned
+	probabilities = find_probabilities(scores);
+
+	# Print the probabilities, if you want to know more details
+	# print(probabilities)
+
+	# Process scores based on probabilities
+	process_scores(probabilities);
+
+# Run the live demo. 
 live_demo()

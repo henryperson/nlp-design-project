@@ -14,6 +14,8 @@ from read_input import take_user_input, read_possible_classifications
 
 from qwerty_distance import normalized_keyboard_word_distance_withNPArray
 
+import math
+
 
 # Takes input_list: 
 #   ["quadratic", "formula", "not", "komplete", "squar"]
@@ -38,7 +40,7 @@ from qwerty_distance import normalized_keyboard_word_distance_withNPArray
 #  ...
 # }
 def compare(input_list, keywords_dictionary, word_weights):
-	print(input_list)
+	# print(input_list)
 	# print(word_weights)
 	# Load phonetics functions
 	dmeta = fuzzy.DMetaphone()
@@ -55,7 +57,7 @@ def compare(input_list, keywords_dictionary, word_weights):
 	# analyses
 	for method, keywords in keywords_dictionary.iteritems():
 		scores[method] = 0
-
+		# print(method)
 		# Phonetic Scoring methods
 		for phonetic in phonetics_methods:
 			formatted_array = np.asarray(map(phonetic, keywords))
@@ -67,19 +69,19 @@ def compare(input_list, keywords_dictionary, word_weights):
 					formatted_word, formatted_array)
 				# dist_array = damerau_levenshtein_distance_withNPArray(
 				#                             formatted_word, formatted_array).
+				# print("{}: min={}".format(word, min(dist_array)))
 				dist = min(dist_array)
 
 
 				# Handle cases where "not" was found within the input - add to 
 				#    scores dictionary.
-				if word in word_weights:
-					dist = dist*word_weights[word]
+				weight = word_weights.get(word) if word_weights.get(word) else 1
 
 				# print("{}: {}".format(word, n))
 				# if (method == "CompleteTheSquare"):
 				# 	print(dist_array)
 				# 	print("{}: {}, n={}".format(word, (n**2)+(10)*(dist), n))
-				scores[method] += (10)*(dist)
+				scores[method] += weight*math.sqrt(dist)
 
 		# For QWERTY and Damerau-Levenshtein distances, calcuate the differences
 		for word in input_list:
@@ -87,19 +89,19 @@ def compare(input_list, keywords_dictionary, word_weights):
 			dist_array = normalized_keyboard_word_distance_withNPArray(
 				word, keywords)
 			dist = min(dist_array)
+			
 
-			if word in word_weights:
-					dist = dist*word_weights[word]
-			scores[method] += dist
+			weight = word_weights.get(word) if word_weights.get(word) else 1
+			scores[method] += weight*math.sqrt(dist)
 
 			# Do normal LD analysis
 			dist_array = normalized_damerau_levenshtein_distance_withNPArray(
 				word, np.asarray(keywords))
 			dist = min(dist_array)
+			
 
-			if word in word_weights:
-					dist = dist*word_weights[word]
-			scores[method] += dist
+			weight = word_weights.get(word) if word_weights.get(word) else 1
+			scores[method] += weight*math.sqrt(dist)
 
 	print(scores)
 	return scores

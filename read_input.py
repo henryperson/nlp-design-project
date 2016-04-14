@@ -42,8 +42,8 @@ def read_possible_classifications(file_name):
 		keywords_dictionary[current] = filtered_words
 
 	# Add unknown method as a potential option. 
-	keywords_dictionary["UnknownMethod"] = ["do", "not", "know", "unknown", 
-		"help", "helping"]
+	keywords_dictionary["Help"] = ["dont", "know", "unknown", 
+		"help", "helping", "hint", "idea"]
 
 	return keywords_dictionary
 
@@ -79,8 +79,10 @@ def take_user_input():
 		tot_normalize = (words_after_not*(words_after_not+1))/2
 
 		for word in filtered_words[target_index+1:]: # put how far away word is
-			word_weights[word] = ((split_words.index(word) - \
-				target_index_original_string)/float(tot_normalize))*10
+			# word_weights[word] = ((split_words.index(word) - \
+			# 	target_index_original_string)/float(tot_normalize))*10
+			word_weights[word] = (split_words.index(word) - \
+				target_index_original_string)
 
 		return [filtered_words, word_weights]
 

@@ -61,7 +61,7 @@ def process_scores(probabilities):
 			max_score_keys.append(key)
 	
 	# if none of them are actually close, vote unknown
-	if ((max_score - min(values)) < .10):
+	if ((max_score - min(values)) < .05):
 		sys.exit("I am unsure what you meant. Please try again.")
 
 	# if unknown is even one of the options, go with that

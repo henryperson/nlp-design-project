@@ -18,7 +18,8 @@ import string
 
 # Takes a string, outputs string without punctuation
 def depunctuation(s):
-	out = s.translate(string.maketrans("",""), string.punctuation)
+	replace_punctuation = string.maketrans(string.punctuation, ' '*len(string.punctuation))
+	out = s.translate(replace_punctuation)
 	return out
 
 # Takes a string, splits the string at capitalized words

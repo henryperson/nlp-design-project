@@ -61,13 +61,15 @@ def process_scores(probabilities):
 			max_score_keys.append(key)
 	
 	# if none of them are actually close, vote unknown
-	if ((max_score - min(values)) < .05):
+	if ((max_score - min(values)) < .075):
 		sys.exit("I am unsure what you meant. Please try again.")
 
 	# if unknown is even one of the options, go with that
-	if "UnknownMethod" in max_score_keys:
-		print("I'm unsure what you meant. Please try again.")
-	else:
+	#if "Help" in max_score_keys:
+	#	print("I'm unsure what you meant. Please try again.")
+	#else:
 		#otherwise, print options of what you meant, or the one option
-		print("I think you meant :"),
-		print(max_score_keys)
+	#	print("I think you meant :"),
+	#	print(max_score_keys)
+	print("I think you meant :"),
+	print(max_score_keys)

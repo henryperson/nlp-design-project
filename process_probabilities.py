@@ -34,6 +34,7 @@ def find_probabilities(scores):
 	total_probs = sum(probabilities.values())
 	prob_factor = 1/total_probs
 
+	# multiply current value by the prob_factor
 	for method, p in probabilities.iteritems():
 		probabilities[method] = prob_factor * p
 
@@ -45,6 +46,7 @@ def find_probabilities(scores):
 #  "QuadraticFormula":  .395,
 #  ...
 # }
+# Returns none; prints out results.
 def process_scores(probabilities):
 	# values from the dictionary
 	values = probabilities.values()
@@ -64,12 +66,6 @@ def process_scores(probabilities):
 	if ((max_score - min(values)) < .075):
 		sys.exit("I am unsure what you meant. Please try again.")
 
-	# if unknown is even one of the options, go with that
-	#if "Help" in max_score_keys:
-	#	print("I'm unsure what you meant. Please try again.")
-	#else:
-		#otherwise, print options of what you meant, or the one option
-	#	print("I think you meant :"),
-	#	print(max_score_keys)
+	# print expected output
 	print("I think you meant :"),
 	print(max_score_keys)

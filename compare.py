@@ -90,7 +90,7 @@ def compare(input_list, keywords_dictionary, word_weights):
 				word, keywords)
 			dist = min(dist_array)
 			
-
+			# handle weighting for position from "not"
 			weight = word_weights.get(word) if word_weights.get(word) else 1
 			scores[method] += weight*math.sqrt(dist)
 
@@ -103,5 +103,5 @@ def compare(input_list, keywords_dictionary, word_weights):
 			weight = word_weights.get(word) if word_weights.get(word) else 1
 			scores[method] += weight*math.sqrt(dist)
 
-	print(scores)
+	# print(scores)
 	return scores

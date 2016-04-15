@@ -1,4 +1,5 @@
 #!/bin/bash
+cd src
 echo "Use the complete the squares method" | ./main.py 
 echo "I'll use the method of completing the squares" | ./main.py 
 echo "komplete da skware" | ./main.py 

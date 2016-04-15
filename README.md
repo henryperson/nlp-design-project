@@ -3,10 +3,13 @@ _Toby Baratta, 2017 - barattat17_,
 _Henry Fisher, 2018 - fisherhe_, 
 _April 13, 2016_
 
-##
-This is a program to match user input with a set of specific math problem-solving classifications. It is a classic natural language processing question for the problem-solving question. We use a combination of NLP known methods for matching, pre-processing, and assigning scores. 
+## Summary
+This is a program to match user input with a set of specific math problem-solving classifications. It is a classic natural language processing question for the problem-solving question. We use a combination of NLP known methods for matching, pre-processing, and assigning scores.
 
-## Methodology
+## Assumed Input
+Our input is assumed to be any English sentence typed without weird characters or numbers. (If you want to add number compatibility, it's actually really easy and we can do that.) 
+
+## Algorithms
 
 Our methodology combines steps of pre-processing for user input, processing for classifications, and processing for Natural-Language Processing methods. We then assign scores based on potential matches based on a scoring system of "closeness" determined by phonetics, Demarau-Levenshtein, QWERTY Keyboard, and closeness to "not" within the input. 
 
@@ -41,11 +44,29 @@ After a couple more failed techniques, we found the one that works - weight word
 
 After compiling a score for each solution method, we take the minimum three scores and find probabilities for these three. The probabilities here are more or less arbitrary since the scores are arbitrary - in order to keep probabilities well spread, we take the minimum score and assume that twice the minimum is half as likely. We give the minimum a probability of 1, then find the other probabilities, and then normalize those results. This method ends up with intuitively plausible results. Since our probabilities are arbitrary, the way to determine if an answer is unknown or if we should return two answers is at the programmer's discretion. After playing around with numbers, we found that the best criteria was if the two highest probabilities were within .05 of each other then we return both of them, but if all three are within .05 of each other then we assume the answer is unknown.
 
+## Resources
+
+The python libraries that we use are:
+  - json
+  - sys
+  - math
+  - numpy
+  - re
+  - string
+  - nltk.corpus
+  - fuzzy
+  - pyxdameraulevenshtein
+
+## Restrictions
+
+There are certain cases where this fails - it's not so good at knowing when it shouldn't know the right answer, such as when given something that sounds moderately "mathish" but is just really really off. We could fix this by raising the bar for similarity, but then we worry that we would tell a client we don't understand their input if it's too close. We think that the case of suggesting a potential solution when someone said gibberish is less harmful than discouraging a correct student.
 
 ## Results By Input
-Below are the results for the cases in the email, as well as additional edge cases.
+Below are the results for the cases in the email, as well as additional edge cases. 
+#### Environmental Assumptions
+We ran our code on MacBook Pro's running Yosemite & El Capitan. The Yosemite computer is a 15-inch, Early 2011 MBP with a 2.2 GHz Intel Core i7 and 16 GB of memory. The El Capitan 13-inch, Late 2013 wth a 2.8 Ghz Intel Core i7 and 8 GB of memory. This code works on both computers. 
 
-#### 
+#### Example Results
 ```
 How will you solve this problem? ['You said: Use the complete the squares method']
 {
@@ -223,9 +244,6 @@ How will you solve this problem? ['You said: Not elimination method but maybe ta
 }
 I think you meant : ['TakeSquareRoots']
 ```
-
-## Failure Cases
-There are certain cases where this fails - it's not so good at knowing when it shouldn't know the right answer, such as when given something that sounds moderately "mathish" but is just really really off. We could fix this by raising the bar for similarity, but then we worry that we would tell a client we don't understand their input if it's too close. We think that the case of suggesting a potential solution when someone said gibberish is less harmful than discouraging a correct student.
 
 ## Conclusions
 Overall, we think our solution solves the problem adequately enough, and efficiently enough. We hope you agree!

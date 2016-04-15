@@ -20,7 +20,7 @@ def live_demo():
 		sys.exit("I am unsure what you meant. Please try again.")
 
 	# Read in the possible classifications to the dictionary
-	keywords_dictionary = read_possible_classifications("text.txt")
+	keywords_dictionary = read_possible_classifications("../input/text.txt")
 
 	# Compare possibly classifications to significant user input, weighted
 	#   appropriately for "nots"

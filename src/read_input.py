@@ -19,7 +19,8 @@ import math
 
 # Takes a string, outputs string without punctuation
 def depunctuation(s):
-	replace_punctuation = string.maketrans(string.punctuation, ' '*len(string.punctuation))
+	replace_punctuation = string.maketrans(string.punctuation, 
+		' '*len(string.punctuation))
 	out = s.translate(replace_punctuation)
 	return out
 

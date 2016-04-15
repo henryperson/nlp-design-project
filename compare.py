@@ -40,8 +40,7 @@ import math
 #  ...
 # }
 def compare(input_list, keywords_dictionary, word_weights):
-	print(input_list)
-	# print(word_weights)
+	
 	# Load phonetics functions
 	dmeta = fuzzy.DMetaphone()
 	metaphone = lambda x: dmeta(x)[0]

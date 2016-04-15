@@ -4,15 +4,13 @@
 from read_input import take_user_input, read_possible_classifications
 from compare import compare
 from process_probabilities import find_probabilities, process_scores
+import json
 
 # Import sys to exit with messages
 import sys
 
 # Adding a "live demo" to play with.
 def live_demo():
-
-	# Question for the Demo
-	print("How would you solve this problem? x^2 + 16x = 96")
 
 	# Read in user input, clear out stop words, weight given the style of input
 	[user_input, word_weights] = take_user_input()
@@ -33,6 +31,7 @@ def live_demo():
 
 	# Print the probabilities, if you want to know more details
 	#print(probabilities)
+	print json.dumps(probabilities, indent=1)
 
 	# Process scores based on probabilities
 	process_scores(probabilities);

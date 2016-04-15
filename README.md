@@ -11,14 +11,20 @@ _April 13, 2016_
 
 ### QWERTY Keyboard Distance
 
-### The Elephant in the Room: "Not" this, but that
+#### The Elephant in the Room: "Not" this, but that
 
 ## Results By Input
+#### 
 ```bash
-    Tobys-MacBook-Pro-2:nlp-design-project toby_wan$ python main.py 
-	How would you solve this problem? x^2 + 16x = 96
-	How will you solve this problem? consult the ching
-	I am unsure what you meant. Please try again.
+	How will you solve this problem? Use the complete the squares method
+	{
+		 "CompleteTheSquare": 0.37960960609169075, 
+		 "EliminationMethod": 0.300708641933423, 
+ 		 "SubstitutionMethod": 0.31968175197488613
+	}
+	I think you meant : ['CompleteTheSquare']
 ```
+
+
 
 ## Conclusions

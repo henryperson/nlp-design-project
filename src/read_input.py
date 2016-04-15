@@ -7,9 +7,8 @@ import re
 import sys
 
 # Documentation here: http://www.nltk.org/
-# pip install nltk
-#nltk.download()  # Download text data sets, including stop words
-from nltk.corpus import stopwords
+# Taken from the open-source NLTK Package, augmented for this problem
+from stop_words import stop_words
 
 # Handle profanity by filtering things from bad_words
 from profanity import bad_words
@@ -41,7 +40,7 @@ def read_possible_classifications(file_name):
 		current = line.rstrip()
 		split_words = map(lambda x:x.lower(), split_upper(current))
 		filtered_words = [word for word in split_words if word not in \
-			stopwords.words('english')]
+			stop_words]
 		keywords_dictionary[current] = filtered_words
 
 	# Add unknown method as a potential option. 
@@ -66,14 +65,7 @@ def take_user_input():
 	if (test):
 		sys.exit("Please don't say inappropriate things to me.")
 
-	# remove stopwords 
-	stop = stopwords.words('english')
-	stop.remove("not") #take "not" out of stop words
-
-	# add in stop words with bad slang
-	map(stop.append, ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o",
-		"p","q","r","s","t","u","v","w","x","y","z","cuz","wat","teh","itz",
-		"wut","probs","probz","dunno","huh", "use"])
+	stop = stop_words;
 
 	filtered_words = [word for word in split_words if word not in stop]
 	

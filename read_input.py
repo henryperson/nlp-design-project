@@ -52,6 +52,7 @@ def read_possible_classifications(file_name):
 def take_user_input():
 	# take input from stdin
 	solve_method = raw_input("How will you solve this problem? ")
+	print(["You said: " + solve_method])
 
 	# remove punctuation from string
 	solve_method = depunctuation(solve_method)

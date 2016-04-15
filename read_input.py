@@ -83,30 +83,18 @@ def take_user_input():
 	# in the input. We keep the "not" so that "i do not know" keeps for unknown
 	# method. 
 	try: 
-		# target_index = filtered_words.index("not") # find the not
-		# target_index_original_string = split_words.index("not") # original not
-		# words_after_not = len(filtered_words[target_index+1:])
-		# tot_normalize = (words_after_not*(words_after_not+1))/2
-
-		# for word in filtered_words[target_index+1:]: # put how far away word is
-			# word_weights[word] = ((split_words.index(word) - \
-			# 	target_index_original_string)/float(tot_normalize))*10
-			# word_weights[word] = (split_words.index(word) - \
-			# 	target_index_original_string)
-
 		target_index = filtered_words.index("not") # find the not
-		target_index_original_string = split_words.index("not") # original not
 		words_after_not = len(filtered_words[target_index+1:])
-		# words_after_not_orig = len(split_words[target_index_original_string+1:])
-		# decrease = 10.0 / (words_after_not + 1)
 		base = math.e
 
 		for word in filtered_words[target_index+1:]: # put how far away word is
 			dist_from_not = (filtered_words.index(word) - \
 				target_index)
 
+			# The idea here is we want to spread weightings such that distances
+			# less than e get below 1 and greater than e get positive 1 (e 
+			# because of its elegance)
 			word_weights[word] = min(math.log(dist_from_not, base)**4, 6)
-			# word_weights[word] = dist_from_not
 
 		return [filtered_words, word_weights]
 

@@ -40,7 +40,6 @@ import math
 #  ...
 # }
 def compare(input_list, keywords_dictionary, word_weights):
-	print(word_weights)
 	# Load phonetics functions
 	dmeta = fuzzy.DMetaphone()
 	metaphone = lambda x: dmeta(x)[0]
@@ -66,22 +65,13 @@ def compare(input_list, keywords_dictionary, word_weights):
 				dist_array = \
 				normalized_damerau_levenshtein_distance_withNPArray(
 					formatted_word, formatted_array)
-				# dist_array = damerau_levenshtein_distance_withNPArray(
-				#                             formatted_word, formatted_array).
-				# print("{}: min={}".format(word, min(dist_array)))
+				
 				dist = min(dist_array)
-
 
 				# Handle cases where "not" was found within the input - add to 
 				#    scores dictionary.
-
-				# weight = math.sqrt(word_weights.get(word)) if word_weights.get(word) else 1
 				weight = word_weights.get(word) if word_weights.get(word) else 1
 
-				# print("{}: {}".format(word, n))
-				# if (method == "CompleteTheSquare"):
-				# 	print(dist_array)
-				# 	print("{}: {}, n={}".format(word, (n**2)+(10)*(dist), n))
 				scores[method] += weight*math.sqrt(dist)
 
 		# For QWERTY and Damerau-Levenshtein distances, calcuate the differences
@@ -92,7 +82,6 @@ def compare(input_list, keywords_dictionary, word_weights):
 			dist = min(dist_array)
 			
 			# handle weighting for position from "not"
-			# weight = math.sqrt(word_weights.get(word)) if word_weights.get(word) else 1
 			weight = word_weights.get(word) if word_weights.get(word) else 1
 			scores[method] += weight*math.sqrt(dist)
 
@@ -101,9 +90,7 @@ def compare(input_list, keywords_dictionary, word_weights):
 				word, np.asarray(keywords))
 			dist = min(dist_array)
 			
-			# weight = math.sqrt(word_weights.get(word)) if word_weights.get(word) else 1
 			weight = word_weights.get(word) if word_weights.get(word) else 1
 			scores[method] += weight*math.sqrt(dist)
 
-	# print(scores)
 	return scores

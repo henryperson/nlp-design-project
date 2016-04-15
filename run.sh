@@ -18,4 +18,7 @@ echo "Use Kolmolgorov Turbulence" | ./main.py
 echo "Factor Third-order Partial Differential Equations" | ./main.py
 echo "Consult the i ching" | ./main.py
 echo "Read Tea Leaves" | ./main.py
+echo "Substitution method not quadratic formula" | ./main.py
+echo "Not factor quadratics but maybe elimination method or quadratic formula" | ./main.py
+echo "Not elimination method but maybe taking square roots" | ./main.py
 	

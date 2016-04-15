@@ -66,10 +66,11 @@ def take_user_input():
 	# remove stopwords 
 	stop = stopwords.words('english')
 	stop.remove("not") #take "not" out of stop words
-	stop.append("use")
+
+	# add in stop words with bad slang
 	stop.append(["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o",
 		"p","q","r","s","t","u","v","w","x","y","z","cuz","wat","teh","itz",
-		"wut","probs","probz","dunno","huh"])
+		"wut","probs","probz","dunno","huh", "use"])
 	filtered_words = [word for word in split_words if word not in stop]
 	
 	# add a new dictionary of indices of key words from the nots

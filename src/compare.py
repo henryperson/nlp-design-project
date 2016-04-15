@@ -1,5 +1,5 @@
 import sys
-sys.path.append("dependencies")
+sys.path.append("../dependencies")
 
 # Documentation here: https://pypi.python.org/pypi/Fuzzy
 import fuzzy

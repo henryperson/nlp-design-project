@@ -1,0 +1,201 @@
+nlp-design-project:$ ./run.sh 
+How will you solve this problem? ['You said: Use the complete the squares method']
+{
+ "CompleteTheSquare": 0.41575528687778684, 
+ "EliminationMethod": 0.2811457841693379, 
+ "SubstitutionMethod": 0.30309892895287543
+}
+I think you meant : ['CompleteTheSquare']
+
+
+How will you solve this problem? ["You said: I'll use the method of completing the squares"]
+{
+ "CompleteTheSquare": 0.393921257521752, 
+ "EliminationMethod": 0.29103573803071475, 
+ "SubstitutionMethod": 0.31504300444753325
+}
+I think you meant : ['CompleteTheSquare']
+
+
+How will you solve this problem? ['You said: komplete da skware']
+{
+ "TakeSquareRoots": 0.30375040263107245, 
+ "CompleteTheSquare": 0.420406772782702, 
+ "Help": 0.27584282458622555
+}
+I think you meant : ['CompleteTheSquare']
+
+
+How will you solve this problem? ["You said: I'm not sure"]
+{
+ "TakeSquareRoots": 0.31858024714393274, 
+ "Help": 0.32209525604172934, 
+ "SubstitutionMethod": 0.3593244968143379
+}
+I am unsure what you meant. Please try again.
+
+
+How will you solve this problem? ['You said: complete-the-squares method']
+{
+ "CompleteTheSquare": 0.41575528687778684, 
+ "EliminationMethod": 0.2811457841693379, 
+ "SubstitutionMethod": 0.30309892895287543
+}
+I think you meant : ['CompleteTheSquare']
+
+
+How will you solve this problem? ["You said: I'd use the quadratic formula cuz itz my fave"]
+{
+ "QuadraticFormula": 0.47995038842031434, 
+ "SubstitutionMethod": 0.19851800647900636, 
+ "FactorQuadratic": 0.3215316051006793
+}
+I think you meant : ['QuadraticFormula']
+
+
+How will you solve this problem? ["You said: I'll factor quadratics"]
+{
+ "QuadraticFormula": 0.17539925000631898, 
+ "TakeSquareRoots": 0.11240989931918252, 
+ "FactorQuadratic": 0.7121908506744985
+}
+I think you meant : ['FactorQuadratic']
+
+
+How will you solve this problem? ['You said: I plan to complete the squares']
+{
+ "TakeSquareRoots": 0.2752197537358025, 
+ "CompleteTheSquare": 0.48104046463443006, 
+ "Help": 0.2437397816297675
+}
+I think you meant : ['CompleteTheSquare']
+
+
+How will you solve this problem? ['You said: Do a square root']
+{
+ "TakeSquareRoots": 0.5393418624052703, 
+ "CompleteTheSquare": 0.28774056575319396, 
+ "SubstitutionMethod": 0.1729175718415359
+}
+I think you meant : ['TakeSquareRoots']
+
+
+How will you solve this problem? ['You said: Utilize the methods of square roots']
+{
+ "TakeSquareRoots": 0.464494631605512, 
+ "CompleteTheSquare": 0.2671990975590527, 
+ "SubstitutionMethod": 0.2683062708354354
+}
+I think you meant : ['TakeSquareRoots']
+
+
+How will you solve this problem? ['You said: Solve by substitution']
+{
+ "TakeSquareRoots": 0.268875307037918, 
+ "Help": 0.2732965093937963, 
+ "SubstitutionMethod": 0.45782818356828564
+}
+I think you meant : ['SubstitutionMethod']
+
+
+How will you solve this problem? ['You said: I have no idea']
+{
+ "EliminationMethod": 0.14881428776638386, 
+ "SubstitutionMethod": 0.16139515140500674, 
+ "Help": 0.6897905608286095
+}
+I think you meant : ['Help']
+
+
+How will you solve this problem? ['You said: Help']
+{
+ "EliminationMethod": 0.15112846630879118, 
+ "SubstitutionMethod": 0.1468916354926982, 
+ "Help": 0.7019798981985106
+}
+I think you meant : ['Help']
+
+
+How will you solve this problem? ['You said: Give me a hint']
+{
+ "EliminationMethod": 0.26424046159671716, 
+ "SubstitutionMethod": 0.2621920174036329, 
+ "Help": 0.4735675209996501
+}
+I think you meant : ['Help']
+
+
+How will you solve this problem? ['You said: Xyzzy']
+{
+ "TakeSquareRoots": 0.32852684792250564, 
+ "SubstitutionMethod": 0.3520820345126482, 
+ "FactorQuadratic": 0.31939111756484617
+}
+I am unsure what you meant. Please try again.
+
+
+How will you solve this problem? ['You said: Use Kolmolgorov Turbulence']
+{
+ "QuadraticFormula": 0.3913684688410312, 
+ "CompleteTheSquare": 0.2999207437252117, 
+ "Help": 0.30871078743375713
+}
+I think you meant : ['QuadraticFormula']
+
+
+How will you solve this problem? ['You said: Factor Third-order Partial Differential Equations']
+{
+ "TakeSquareRoots": 0.31357942682191525, 
+ "Help": 0.3224725212165533, 
+ "FactorQuadratic": 0.36394805196153135
+}
+I think you meant : ['Help', 'FactorQuadratic']
+
+
+How will you solve this problem? ['You said: Consult the i ching']
+{
+ "CompleteTheSquare": 0.3176414314357454, 
+ "Help": 0.36470775232041625, 
+ "SubstitutionMethod": 0.3176508162438384
+}
+I am unsure what you meant. Please try again.
+
+
+How will you solve this problem? ['You said: Read Tea Leaves']
+{
+ "EliminationMethod": 0.3283304653108357, 
+ "SubstitutionMethod": 0.33264100847710637, 
+ "Help": 0.33902852621205803
+}
+I am unsure what you meant. Please try again.
+
+
+How will you solve this problem? ['You said: Substitution method not quadratic formula']
+{
+ "QuadraticFormula": 0.2953618637413158, 
+ "SubstitutionMethod": 0.4190777262085775, 
+ "FactorQuadratic": 0.28556041005010663
+}
+I think you meant : ['SubstitutionMethod']
+
+
+How will you solve this problem? ['You said: Not factor quadratics but maybe elimination method or quadratic formula']
+{
+ "QuadraticFormula": 0.38153976345309637, 
+ "EliminationMethod": 0.3397297965457948, 
+ "FactorQuadratic": 0.2787304400011088
+}
+I think you meant : ['QuadraticFormula', 'EliminationMethod']
+
+
+How will you solve this problem? ['You said: Not elimination method but maybe taking square roots']
+{
+ "TakeSquareRoots": 0.5465325959447944, 
+ "CompleteTheSquare": 0.25254198816232504, 
+ "Help": 0.2009254158928806
+}
+I think you meant : ['TakeSquareRoots']
+
+
+How will you solve this problem? ['You said: I fucking hate math']
+Please don't say inappropriate things to me.

@@ -1,36 +1,37 @@
 # Matching User Input with Answer Solving Categories
-_Toby Baratta, 2017 - barattat17_, 
-_Henry Fisher, 2018 - fisherhe_, 
-_April 13, 2016_
+_Toby Baratta, 2017 - barattat17@grinnell.edu_, 
+_Henry Fisher, 2018 - fisherhe@grinnell.edu_
 
-## Summary
+_April 15, 2016_
+
+## Summary of Problem
+
 This is a program to match user input with a set of specific math problem-solving classifications. It is a classic natural language processing question for the problem-solving question. We use a combination of NLP known methods for matching, pre-processing, and assigning scores.
 
+So, the set up of the problem is the following: We are supplementing an algebra or general math teacher. When a student is presented with a problem, we want them to express how they will solve the problem in plain English. Then, we want to process that method of solving the problem, and repeat it back to them as the math terminology. Given a list of math terminologies (such as CompleteTheSquare, TakeSquareRoots, QuadraticFormula), we want to try to match what the student put in, however they phrased it, with the math terminology. We also want to process cases where they have inputted inappropriate language, typos, spelling mistakes (based on phonetic spelling, to separate this from typos) and still match those correctly. Generally, we're splitting the user input into categories defined by different mathematical problem solving techniques. 
+
 ## Assumed Input
-Our input is assumed to be any English sentence typed without weird characters or numbers. (If you want to add number compatibility, it's actually really easy and we can do that.) 
+Our input is assumed to be any English sentence typed without any particularly weird characters. 
 
 ## Algorithms
+
+### Summary - in English
 
 Our methodology combines steps of pre-processing for user input, processing for classifications, and processing for Natural-Language Processing methods. We then assign scores based on potential matches based on a scoring system of "closeness" determined by phonetics, Demarau-Levenshtein, QWERTY Keyboard, and closeness to "not" within the input. 
 
 So, basically we take the user input, look for any key words in that input or any key phrases (such as a "not this, but that" or "this, not that") and then keep those words. We then give more points for things far away from or before any "nots" or negative words. Then, we measure closeness based on pronounciation (phonetics), and then typo measurements based on keyboards--so typing a 'q' instead of a 'w' gets more points than accidentally typing an 'o'. Demarau-Levenshtein takes into consideration if you type things wrong, such as 'rwote' instead of 'wrote'.  
 
-Then, given these "closeness" scores and "spelling/pronounciation" scores, we calculate a combined score for each potential classification. By classification, we're meaning the method of problem being solved--such as "QuadraticFormula" or "TakeSquareRoots". Next, given those scores we assign probabilities. Then, for the best three options, we look at how close they are  - if they're too close, we ask if either of them were what was meant, unless *all* options are very close. If they're all really close, we say that we don't know what they want. 
+Then, given these "closeness" scores and "spelling/pronunciation" scores, we calculate a combined score for each potential classification. By classification, we're meaning the method of problem being solved--such as "QuadraticFormula" or "TakeSquareRoots". Next, given those scores we assign probabilities. Then, for the best three options, we look at how close they are  - if they're too close, we ask if either of them were what was meant, unless *all* options are very close. If they're all really close, we say that we don't know what they want.
 
 #### Parsing User Input
 
-To parse the user input, we first remove punctuation and replace that by spaces. We then split on those spaces to tokenize the input. Before we go any further, we search for any "bad words"; if any are found, we tell the user to fix their language and quit. If we get past that, we see if the input is within a list of stopwords, created from the generic NLP package of stopwords addended with several other potential stop words. We remove those stopwords from the lists. 
+To parse the user input, we first remove punctuation and replace that by spaces. We then split on those spaces to tokenize the input. Before we go any further, we search for any "bad words"; if any are found, we tell the user to fix their language and quit. If we get past that, we see if the input is within a list of stop words, created from the generic NLP package of stop words combined with several other potential stop words. Stop words are words that are known not to include any key content within a sentence, such as "I", "you", "will", "up", and "down". We used a generic stop words dictionary built into Python's NLP library. We then, remove those stop words from the lists. 
 
 Then, we see if there is a "not" within the input. If there was a not within the input, we weight each word after the "not" based on how far away it is from the "not". At first, we just cleared all input that was after the not, but then realized that a user could plug in "not this, but that", so we rethought our methodologies. This method, through vigorous testing, does seem to be working properly. 
 
-#### Phonetics 
-For phonetics, we used Soundex and Double Metaphone to assess both the input words and the dictionary words (the classifications). We then matched those together, and used the Demarau-Levenshtein Edit Distance to compare the differences for phonetic words. These algorithms were implemented in the Fuzzy package. 
+#### Phonetics, Edit Distance, and Comparing Words
+For comparison of words, we use phonetic representations & well-known similarity algorithms. These algorithms result back numbers that tell "how different" words are. For instance, "kwadratic" and "quadratic" are represented the same way using Metaphone & Soundex, and thus would get a score of zero. Then, for QWERTY distance we rank mistypes such as "wuadratic" closer to "quadratic" than "puadratic". This allows for keyboard mistakes that happen all the time, or other spelling mistakes. Then, we take into consideration the pure Demerau-Levenshtein Edit Distance, which counts the number of transformations to get from one word to another - for instance "ukadratic formula" would result in 2, because of two transformations--swapping the k and the u, then changing the k to a u (or changing both the u and k to q and u respectively). This combination of algorithms solves common errors together. 
 
-#### Demarau-Levenshtein Edit Distance
-Demarau-Levenshtein Edit Distance uses the DL algorithm classically, as implemented within the "pyxdameraulevenshtein" Python package. 
-
-#### QWERTY Keyboard Distance
-QWERTY Keyboard Distance formula takes into consideration how far keys are from each other on the basic keyboard. This was implemented through some code from Stack Overflow, plus some original python code by us. 
 
 #### Scoring & Probability
 
@@ -47,24 +48,31 @@ After compiling a score for each solution method, we take the minimum three scor
 ## Resources
 
 The python libraries that we use are:
-  - json
-  - sys
-  - math
-  - numpy
-  - re
-  - string
-  - nltk.corpus
-  - fuzzy
-  - pyxdameraulevenshtein
+  - json (built in)
+  - sys (built in)
+  - math (built in)
+  - numpy (built in)
+  - re (built in)
+  - string (built in)
+  - nltk.corpus (sourced, but not actually imported from)
+  - fuzzy (see dependencies folder)
+  - pyxdameraulevenshtein (see dependencies folder)
 
 ## Restrictions
 
-There are certain cases where this fails - it's not so good at knowing when it shouldn't know the right answer, such as when given something that sounds moderately "mathish" but is just really really off. We could fix this by raising the bar for similarity, but then we worry that we would tell a client we don't understand their input if it's too close. We think that the case of suggesting a potential solution when someone said gibberish is less harmful than discouraging a correct student.
+There are certain cases where this fails - it's not so good at knowing when it shouldn't know the right answer, such as when given something that sounds moderately "mathish" but is just really wrong. We could fix this by raising the threshold for similarity, but then we worry that we would tell a client we don't understand their input if it's too close. We think that the case of suggesting a potential solution when someone said gibberish is less harmful than discouraging a correct student.
+
+We do have some environmental restrictions, due to the added requirement that we must bundle our libraries with our code. See below for Environmental Assumptions addressing these concerns.
 
 ## Results By Input
-Below are the results for the cases in the email, as well as additional edge cases. 
+Below are the results for the cases in the email, as well as additional edge cases.
+
 #### Environmental Assumptions
-We ran our code on MacBook Pro's running Yosemite & El Capitan. The Yosemite computer is a 15-inch, Early 2011 MBP with a 2.2 GHz Intel Core i7 and 16 GB of memory. The El Capitan 13-inch, Late 2013 wth a 2.8 Ghz Intel Core i7 and 8 GB of memory. This code works on both computers. 
+We ran our code on three MacBook Pros (MBP), running Yosemite & El Capitan. The first Yosemite computer is a 15-inch, Early 2011 MBP with a 2.2 GHz Intel Core i7 and 16 GB of memory. The other Yosemite computer is a 13-inch, Late 2009 MBP with a 2.26 GHz Intel Core 2 Duo with 8 GB of memory. The El Capitan computer is a 13-inch, Late 2013 MBP with a 2.8 GHz Intel Core i7 and 8 GB of memory. This code works on all three computers. 
+
+The dependencies folder was created solely to allow for use of this program on a laptop on a plane. To avoid these dependencies, one can comment out the first lines of "compare.py" and before running their program run "sudo pip install pyxdameraulevenshtein" and "sudo pip install "fuzzy". This is because .so files only work on Macs and cannot be build and run properly on a Linux server. 
+
+However, we did test our code using the same packages, just without .so files on the Grinnell College MATHLAN Linux distribution of Debian GNU/Linux 7 (wheezy). 
 
 #### Example Results
 ```
@@ -246,4 +254,8 @@ I think you meant : ['TakeSquareRoots']
 ```
 
 ## Conclusions
-Overall, we think our solution solves the problem adequately enough, and efficiently enough. We hope you agree!
+Overall, we think our solution solves the problem adequately enough, and efficiently enough. We hope you agree.
+
+## Acknowledgements
+
+We appreciate you taking the time to review our work, the amazing work of open source Python programmers, and non-CS friends for reviewing this PDF to make sure we are, in fact, speaking English.

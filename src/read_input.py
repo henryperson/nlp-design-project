@@ -17,6 +17,9 @@ import string
 
 import math
 
+def denumber(s):
+	return ''.join([i for i in s if not i.isdigit()])
+
 # Takes a string, outputs string without punctuation
 def depunctuation(s):
 	replace_punctuation = string.maketrans(string.punctuation, 
@@ -56,8 +59,8 @@ def take_user_input():
 	solve_method = raw_input("How will you solve this problem? ")
 	print(["You said: " + solve_method])
 
-	# remove punctuation from string
-	solve_method = depunctuation(solve_method)
+	# remove punctuation and numbers from string
+	solve_method = denumber(depunctuation(solve_method))
 	# split string by spaces, make lower case
 	split_words = map(lambda x:x.lower(), solve_method.split())
 

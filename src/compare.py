@@ -1,13 +1,16 @@
+import sys
+sys.path.append("dependencies")
+
 # Documentation here: https://pypi.python.org/pypi/Fuzzy
 import fuzzy
-
-# Import numpy library for Damerau-Levenshtein Edit Distance Equations
-import numpy as np
 
 # Documentation here: https://github.com/gfairchild/pyxDamerauLevenshtein
 # Import Normalized Damerau-Levenshtein Distance
 from pyxdameraulevenshtein import \
 	normalized_damerau_levenshtein_distance_withNPArray
+
+# Import numpy library for Damerau-Levenshtein Edit Distance Equations
+import numpy as np
 
 # Import read bac
 from read_input import take_user_input, read_possible_classifications

@@ -40,7 +40,7 @@ import math
 #  ...
 # }
 def compare(input_list, keywords_dictionary, word_weights):
-	
+	print(word_weights)
 	# Load phonetics functions
 	dmeta = fuzzy.DMetaphone()
 	metaphone = lambda x: dmeta(x)[0]
@@ -74,6 +74,8 @@ def compare(input_list, keywords_dictionary, word_weights):
 
 				# Handle cases where "not" was found within the input - add to 
 				#    scores dictionary.
+
+				# weight = math.sqrt(word_weights.get(word)) if word_weights.get(word) else 1
 				weight = word_weights.get(word) if word_weights.get(word) else 1
 
 				# print("{}: {}".format(word, n))
@@ -90,6 +92,7 @@ def compare(input_list, keywords_dictionary, word_weights):
 			dist = min(dist_array)
 			
 			# handle weighting for position from "not"
+			# weight = math.sqrt(word_weights.get(word)) if word_weights.get(word) else 1
 			weight = word_weights.get(word) if word_weights.get(word) else 1
 			scores[method] += weight*math.sqrt(dist)
 
@@ -98,7 +101,7 @@ def compare(input_list, keywords_dictionary, word_weights):
 				word, np.asarray(keywords))
 			dist = min(dist_array)
 			
-
+			# weight = math.sqrt(word_weights.get(word)) if word_weights.get(word) else 1
 			weight = word_weights.get(word) if word_weights.get(word) else 1
 			scores[method] += weight*math.sqrt(dist)
 

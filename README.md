@@ -4,6 +4,8 @@ _Henry Fisher, 2018 - fisherhe@grinnell.edu_
 
 _April 15, 2016_
 
+Note: This solution won the Kent Fuka Natural Language Processing Querium Contest.
+
 ## Summary of Problem
 
 This is a program to match user input with a set of specific math problem-solving classifications. It is a classic natural language processing question for the problem-solving question. We use a combination of NLP known methods for matching, pre-processing, and assigning scores.
